@@ -2,31 +2,46 @@
     "1": {
         "name": "Raw Minnow",
         "max_stack": 2,
-        "eat": 0,
         "value": 1
     },
     "2": {
         "name": "Fishing Pole",
         "max_stack": 1,
-        "eat": 0,
+        "tool": {
+            "type": "fishing"
+        },
         "value": 100
     },
     "3": {
         "name": "Fly Fishing Pole",
         "max_stack": 1,
-        "eat": 0,
+        "tool": {
+            "type": "fly"
+        },
         "value": 100
     },
     "4": {
         "name": "Spear",
         "max_stack": 1,
-        "eat": 0,
+        "tool": {
+            "type": "spear"
+        },
         "value": 1000
     },
     "5": {
         "name": "Net",
         "max_stack": 1,
-        "eat": 0,
+        "tool": {
+            "type": "net"
+        },
+        "value": 10000
+    },
+    "6": {
+        "name": "Bag on a stick",
+        "max_stack": 1,
+        "backpack": {
+            "capacity": 20
+        },
         "value": 10000
     }
 }
