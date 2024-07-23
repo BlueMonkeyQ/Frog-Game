@@ -10,11 +10,56 @@
     },
     "2":{
         "name": "Salmon",
-        "lvl": 1,
+        "lvl": 25,
         "xp": 5,
         "type": "fly",
         "drops":[
             [7,100,1,2]
+        ]
+    },
+    "3":{
+        "name": "Sardine",
+        "lvl": 1,
+        "xp": 5,
+        "type": "fishing",
+        "drops":[
+            [10,100,1,1]
+        ]
+    },
+    "4":{
+        "name": "Herring",
+        "lvl": 5,
+        "xp": 5,
+        "type": "fishing",
+        "drops":[
+            [11,100,1,1]
+        ]
+    },
+    "5":{
+        "name": "Pike",
+        "lvl": 20,
+        "xp": 5,
+        "type": "fishing",
+        "drops":[
+            [12,100,1,1]
+        ]
+    },
+    "6":{
+        "name": "Anglerfish",
+        "lvl": 50,
+        "xp": 5,
+        "type": "fishing",
+        "drops":[
+            [13,100,1,1]
+        ]
+    },
+    "7":{
+        "name": "Trout",
+        "lvl": 20,
+        "xp": 5,
+        "type": "fishing",
+        "drops":[
+            [14,100,1,1]
         ]
     }
 }

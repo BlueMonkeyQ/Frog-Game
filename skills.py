@@ -26,7 +26,7 @@ def getFish(player: Player, tool_type, fishes):
     """
     
     fishes = [fishing_dict[f"{i}"] for i in fishes]
-    available_fish = [i for i in fishes if i['type'] == tool_type]
+    available_fish = [i for i in fishes if i['type'] == tool_type and i['lvl'] <= player.getLevel(player.getFishingXp())]
     if len(available_fish) == 0: return None
     index = functions.rollChance(0,len(available_fish)-1)
 
@@ -37,7 +37,7 @@ def fishingMenu(player: Player, location_dict):
     """Menu for interacting with a fishing skill"""
 
     # Check if player has fishing tool equipped
-    if player.getTool().getToolType() in ['net','fly','spear','fishing']:
+    if player.getTool() and player.getTool().getToolType() in ['net','fly','spear','fishing']:
         # Check if player has supplies
         tool = player.getTool()
         tool_type = tool.getToolType()
@@ -49,8 +49,11 @@ def fishingMenu(player: Player, location_dict):
             else:
                 player.inventoryRemove(supplies_id,1)
                 fishing(player, fish)
+                return True
         else:
             print(f"Missing Supply: {item.getItemName(supplies_id)}")
+    else:
+        return None
 
 
 def fishing(player: Player, fish: dict):
