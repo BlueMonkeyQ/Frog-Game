@@ -1,4 +1,5 @@
 import shops
+import skills
 import json
 from pathlib import Path
 
@@ -11,24 +12,31 @@ def getPlanetMap(planet):
     "Gets the Map Dictionary of the current Planet"
     return getJSONMap(planet)
 
-def getLocation(map_dict,id):
+def getLocation(world_map,id):
     """Returns dicitonary of location"""
-    return map_dict[f"{id}"]
+    return world_map[f"{id}"]
 
-def worldMap(player, planet):
+def worldMap(player, planet, id):
     """World Map"""
 
     world_map = getPlanetMap(planet)
-    location_dict = getLocation(world_map,1)
+    location_dict = getLocation(world_map,2)
     
     print(f"---------- {location_dict['name']} ----------")
 
-    if location_dict['shops']:
+    if 'shops' in location_dict:
         print(f" ----- Shops -----")
         for i in location_dict['shops']:
             print(f":: {shops.getShopName(i)}")
         print(f" ----- Shops -----")
 
+    if 'areas' in location_dict:
+        print(f" ----- Areas -----")
+        for i in location_dict['areas']:
+            print(f":: {world_map[f"{i}"]['name']}")
+        print(f" ----- Areas -----")
+
     print(f"---------- {location_dict['name']} ----------")
 
     shops.shopMenu(player, 1)
+    skills.fishingMenu(player,location_dict)

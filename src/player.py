@@ -5,11 +5,16 @@ class Player():
     def __init__(self):
         # Skills
         self.fishing_xp = 0
+
         # General
         self.name = "Frog"
         self.gold = 0
         self.inventory: List[Item] = [] # List of item Objects
-        self.inventory_max = 1 # Inventory Size
+        self.inventory_max = 4 # Inventory Size
+
+        # Equipment
+        self.backpack: Item = None
+        self.tool: Item = None
 
     def displayStats(self):
         print(f"---------- General ----------")
@@ -18,10 +23,14 @@ class Player():
         print(f"----- Skills -----")
         print(f":: Fishing Lvl: {self.getLevel(self.fishing_xp)} XP: {self.fishing_xp}")
         print(f"----- Skills -----")
-        print(f"----- Inventory --")
+        print(f"----- Inventory {len(self.inventory)}/{self.inventory_max} -----")
         for i in self.inventory:
             print(f":: #{i.getAmount():<2} {i.getName()}")
-        print(f"----- Inventory --")
+        print(f"----- Inventory {len(self.inventory)}/{self.inventory_max} -----")
+        print(f"----- Equipment -----")
+        print(f":: Tool:     {self.tool.getName() if self.tool is not None else "Empty"}")
+        print(f":: Backpack: {self.backpack.getName() if self.backpack is not None else "Empty"}")
+        print(f"----- Equipment -----")
         print("---------- General ----------")
 
     def getLevel(self, xp):
@@ -36,12 +45,52 @@ class Player():
                 break
         return level
     
+    # ---------- Equipment ----------
+    def equipEquipment(self,item: Item):
+        """
+        Equip Tool from inventory
+        If tool exist in slot, add it back into inventory
+        """
+        current_equipped = None
+
+        if item.getTool() is not None:
+            if self.tool != None:
+                current_equipped = self.tool
+            
+            self.tool = item
+
+        elif item.getBackpack() is not None:
+            if self.backpack != None:
+                current_equipped = self.backpack
+            
+            self.backpack = item
+            self.inventory_max = item.getBackpackCapacity()
+
+        else:
+            return 0
+
+        self.inventoryRemove(item.getId())
+        if current_equipped:
+            self.inventoryAdd(current_equipped.getId(),1)
+
+    
     # ---------- Inventory ----------
     def displayInventory(self):
         print(f":: -- Inventory --")
         for i in self.inventory:
             print(f":: #{i.getAmount():<2} {i.getName()}")
         print(f":: -- --")
+
+    def inventoryFindItem(self,id):
+        """Returns item given id"""
+        for i in self.inventory:
+            if i.getId() == id:
+                return i
+        return None
+
+    def inventoryGetItem(self,index):
+        """Returns the item object from inventory"""
+        return self.inventory[index]
 
     def inventoryAdd(self,id,amount):
         """
@@ -65,9 +114,7 @@ class Player():
                 break
 
             elif len(self.inventory) < self.inventory_max and amount != 0:
-                item = Item(id=id,
-                                name=item_object['name'],
-                                max_stack=item_object['max_stack'])
+                item = itemFromJson(item_object,id)
                 amount = item.setAmount(amount)
                 self.inventory.append(item)
 
@@ -78,7 +125,7 @@ class Player():
             else:
                 break
 
-    def inventoryRemove(self,id,amount):
+    def inventoryRemove(self,id,amount=1):
         """
         Removes Item and amount from players inventory
         If the amount > 0 keep item
@@ -105,3 +152,6 @@ class Player():
     
     def getInventory(self):
         return self.inventory
+    
+    def getTool(self):
+        return self.tool
