@@ -12,6 +12,8 @@ def skillCheck(player_lvl: int, object_lvl: int):
     
 def rollChance(min:int, max: int):
     """Returns the roll between a min and max number"""
+    if min < 0: min = 0
+    if max < 0: max = 0
     return random.randint(min,max)
 
 def getDrops(drop_table):

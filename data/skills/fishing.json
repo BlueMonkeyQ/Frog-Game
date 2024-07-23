@@ -3,8 +3,18 @@
         "name": "Minnow",
         "lvl": 1,
         "xp": 5,
+        "type": "net",
         "drops":[
             [1,100,1,2]
+        ]
+    },
+    "2":{
+        "name": "Salmon",
+        "lvl": 1,
+        "xp": 5,
+        "type": "fly",
+        "drops":[
+            [7,100,1,2]
         ]
     }
 }
