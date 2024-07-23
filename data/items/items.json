@@ -8,7 +8,8 @@
         "name": "Fishing Pole",
         "max_stack": 1,
         "tool": {
-            "type": "fishing"
+            "type": "fishing",
+            "supplies": 8
         },
         "value": 100
     },
@@ -16,7 +17,8 @@
         "name": "Fly Fishing Pole",
         "max_stack": 1,
         "tool": {
-            "type": "fly"
+            "type": "fly",
+            "supplies": 9
         },
         "value": 100
     },
@@ -43,5 +45,20 @@
             "capacity": 20
         },
         "value": 10000
+    },
+    "7": {
+        "name": "Raw Salmon",
+        "max_stack": 2,
+        "value": 1
+    },
+    "8": {
+        "name": "Bait",
+        "max_stack": 500,
+        "value": 1
+    },
+    "9": {
+        "name": "Feather",
+        "max_stack": 500,
+        "value": 1
     }
 }

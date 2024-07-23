@@ -81,6 +81,13 @@ class Player():
             print(f":: #{i.getAmount():<2} {i.getName()}")
         print(f":: -- --")
 
+    def inventoryFindItem(self,id):
+        """Returns item given id"""
+        for i in self.inventory:
+            if i.getId() == id:
+                return i
+        return None
+
     def inventoryGetItem(self,index):
         """Returns the item object from inventory"""
         return self.inventory[index]
@@ -145,3 +152,6 @@ class Player():
     
     def getInventory(self):
         return self.inventory
+    
+    def getTool(self):
+        return self.tool

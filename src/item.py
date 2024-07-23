@@ -24,7 +24,9 @@ def itemFromJson(json_data, id):
         'max_stack': 1,
         'eat': False,
         'backpack': None,
-        'tool': None
+        'tool': None,
+        "type": None,
+        "supplies": None
     }
 
     for key, value in default_values.items():
@@ -82,6 +84,12 @@ class Item():
         
     def getTool(self):
         return self.tool
+    
+    def getToolType(self):
+        return self.tool['type']
+    
+    def getToolSupplies(self):
+        return self.tool['supplies']
         
     def getBackpack(self):
         return self.backpack
