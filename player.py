@@ -138,13 +138,17 @@ class Player():
                 item = i
                 break
         item.setAmount(-amount)
-        if i.getAmount() == 0:
+        if i.getAmount() <= 0:
             self.inventory.remove(item)
                     
     # ---------- Setters ----------
     def setFishingXp(self,xp):
         print(f"{xp} Fishing xp")
         self.fishing_xp += xp
+
+    def setGold(self,_gold):
+        print(f"{_gold} Gold")
+        self.gold += _gold
 
     # ---------- Getters ----------
     def getFishingXp(self):
@@ -155,3 +159,6 @@ class Player():
     
     def getTool(self):
         return self.tool
+    
+    def getGold(self):
+        return self.gold
