@@ -11,6 +11,7 @@ class Player():
         self.gold = 0
         self.inventory: List[Item] = [] # List of item Objects
         self.inventory_max = 4 # Inventory Size
+        self.tool_belt: Item = None
 
         # Equipment
         self.backpack: Item = None
@@ -51,27 +52,38 @@ class Player():
         Equip Tool from inventory
         If tool exist in slot, add it back into inventory
         """
-        current_equipped = None
+        try:
+            current_equipped = None
 
-        if item.getTool() is not None:
-            if self.tool != None:
-                current_equipped = self.tool
-            
-            self.tool = item
+            if item.getTool() is not None:
+                if self.tool != None:
+                    current_equipped = self.tool
+                
+                self.tool = item
 
-        elif item.getBackpack() is not None:
-            if self.backpack != None:
-                current_equipped = self.backpack
-            
-            self.backpack = item
-            self.inventory_max = item.getBackpackCapacity()
+            elif item.getBackpack() is not None:
 
-        else:
-            return 0
+                if self.backpack != None and len(self.inventory) > item.getBackpackCapacity():
+                    print(f"{len(self.inventory) - item.getBackpackCapacity()} items overweight. Un-able to unequip current backpack")
+                    return False
 
-        self.inventoryRemove(item.getId())
-        if current_equipped:
-            self.inventoryAdd(current_equipped.getId(),1)
+                else:
+                    current_equipped = self.backpack
+
+                self.backpack = item
+                self.inventory_max = item.getBackpackCapacity()
+
+            else:
+                return False
+
+            self.inventoryRemove(item.getId())
+            if current_equipped:
+                self.inventoryAdd(current_equipped.getId(),1)
+            return True
+        
+        except Exception as e:
+            print(e)
+            return False
 
     
     # ---------- Inventory ----------
@@ -137,9 +149,14 @@ class Player():
             if i.getId() == id:
                 item = i
                 break
-        item.setAmount(-amount)
-        if i.getAmount() <= 0:
-            self.inventory.remove(item)
+
+        if item is None:
+            return 0
+        
+        else:
+            item.setAmount(-amount)
+            if i.getAmount() <= 0:
+                self.inventory.remove(item)
                     
     # ---------- Setters ----------
     def setFishingXp(self,xp):
@@ -157,8 +174,14 @@ class Player():
     def getInventory(self):
         return self.inventory
     
+    def getInventoryMax(self):
+        return self.inventory_max
+    
     def getTool(self):
         return self.tool
+    
+    def getBackpack(self):
+        return self.backpack
     
     def getGold(self):
         return self.gold

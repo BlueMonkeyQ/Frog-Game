@@ -1,12 +1,10 @@
 import maps as maps
 import skills
 from player import Player
-from item import Item
-from init import player
 
 
 def testFishingMenu():
-    global player
+    player = Player()
     world_map = maps.getPlanetMap('earth')
     location_dict = maps.getLocation(world_map,2)
 

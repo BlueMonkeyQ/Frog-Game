@@ -1,12 +1,9 @@
 import shops
-import skills
 from player import Player
-from item import Item
-from init import player
 
 
 def testTransaction():
-    global player
+    player = Player()
     shop_dict = shops.getShop(1)
 
     # Buying - Not enough gold

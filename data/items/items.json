@@ -85,5 +85,13 @@
         "name": "Raw Trout",
         "max_stack": 1,
         "value": 1
+    },
+    "15": {
+        "name": "Fish Barrel",
+        "max_stack": 1,
+        "backpack": {
+            "capacity": 50
+        },
+        "value": 100
     }
 }
