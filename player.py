@@ -12,6 +12,7 @@ class Player():
         self.inventory: List[Item] = [] # List of item Objects
         self.inventory_max = 4 # Inventory Size
         self.tool_belt: Item = None
+        self.bank: List[Item] = [] # List of item Objects with infinite stack size
 
         # Equipment
         self.backpack: Item = None
@@ -111,31 +112,29 @@ class Player():
         elif item exist but max stack is reached, then create new object
         else create new object
         """
-        item_object = item_dict[f"{id}"]
-
-        item = None
-        for i in self.inventory:
-            if i.getId() == id and (i.getAmount() < i.getMaxStack()):
-                item = i
+        item_json = item_dict[f"{id}"]
+        item_object = self.inventoryFindItem(id)
                 
-        if item:
-            amount = item.setAmount(amount)
+        if item_object != None:
+            amount = item_object.calculateAmount(amount)
 
         while True:
             if amount == 0:
                 break
 
             elif len(self.inventory) < self.inventory_max and amount != 0:
-                item = itemFromJson(item_object,id)
-                amount = item.setAmount(amount)
-                self.inventory.append(item)
+                item_object = itemFromJson(item_json,id)
+                amount = item_object.calculateAmount(amount)
+                self.inventory.append(item_object)
 
             elif len(self.inventory) == self.inventory_max:
-                print(f" Inventory full... Dropping #{amount} {item_object['name']}")
+                print("Inventory full")
                 break
 
             else:
                 break
+
+        return amount
 
     def inventoryRemove(self,id,amount=1):
         """
@@ -143,20 +142,137 @@ class Player():
         If the amount > 0 keep item
         else, remove item from inventory
         """
+        try:
+            item_object = self.inventoryFindItem(id)
 
-        item = None
-        for i in self.inventory:
-            if i.getId() == id:
-                item = i
-                break
+            if item_object is None:
+                return False
+            
+            else:
+                item_object.calculateAmount(-amount)
+                if item_object.getAmount() <= 0:
+                    self.inventory.remove(item_object)
 
-        if item is None:
-            return 0
+            return True
         
-        else:
-            item.setAmount(-amount)
-            if i.getAmount() <= 0:
-                self.inventory.remove(item)
+        except Exception as e:
+            print(e)
+            return False
+
+    def inventoryToBank(self,id,amount):
+        """
+        Removes item and amount from inventory to bank
+        If item.amount <= 0 then remove item
+        Else keep remaining amount
+        """
+        try:
+            item_object = self.inventoryFindItem(id)
+            
+            if item_object is None:
+                return False
+            
+            if amount > item_object.getAmount():
+                amount = item_object.getAmount()
+
+            self.bankAdd(id,amount)
+            self.inventoryRemove(id,amount)
+
+            return True
+        
+        except Exception as e:
+            print(e)
+            return False
+
+
+    # ---------- Bank ----------
+
+    def bankFindItem(self,id):
+        """Returns index given id"""
+        for i in self.bank:
+            if i.getId() == id:
+                return i
+        return None
+
+    def bankAdd(self, id, amount):
+        """
+        Adds item into players bank
+        If item exist in bank, just add to the amount count
+        Else, create new item entry
+        """
+        try:
+            item_object = self.bankFindItem(id)
+
+            if item_object is None:
+                item = itemFromJson(item_dict[f"{id}"],id)
+                item.calculateAmount(amount,True)
+                self.bank.append(item)
+
+            else:
+                item_object.calculateAmount(amount,True)
+
+            return True
+        
+        except Exception as e:
+            print(e)
+            return False
+
+    def bankRemove(self, id, amount=1):
+        """
+        Removes item from bank
+        If item.amount > 0 Keep item in banbk
+        Else remove it
+        """
+        try:
+            item_object = self.bankFindItem(id)
+
+            if item_object is None:
+                return False
+            
+            else:
+                item_object.calculateAmount(-amount,True)
+                if item_object.getAmount() <= 0:
+                    self.bank.remove(item_object)
+            
+            return True
+
+        except Exception as e:
+            print(e)
+            return False
+        
+    def bankToInventory(self,id,amount):
+        """
+        Removes item and amount from bank to inventory
+        If len(inventory) == inventory_max return False
+        elif amount > item.max_stack return max_stack
+        elif return amount
+        if item.amount == 0 remove item from bank
+        else keep
+        """
+        try:
+            if len(self.inventory) == self.inventory_max:
+                print("Inventory is at max capacity")
+                return False
+            
+            item_object = self.bankFindItem(id)
+            if amount > item_object.getAmount():
+                amount = item_object.getAmount()
+            
+            new_amount = self.inventoryAdd(id,amount)
+
+            if new_amount != 0:
+                amount -= new_amount
+            
+            item_object.calculateAmount(-amount,True)
+
+            if item_object.getAmount() == 0:
+                self.bankRemove(id)
+
+            return True
+        
+        except Exception as e:
+            print(e)
+            return False
+
                     
     # ---------- Setters ----------
     def setFishingXp(self,xp):

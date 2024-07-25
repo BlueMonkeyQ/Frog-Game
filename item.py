@@ -56,15 +56,20 @@ class Item():
         self.backpack = backpack
 
     # ---------- Setters ----------
-    def setAmount(self,amount):
+    def calculateAmount(self,amount,in_bank=False):
         self.amount += amount
+        if self.amount <= 0:
+            self.amount = 0
+        if in_bank is True:
+            return 0
         if self.amount > self.max_stack:
             remainder = self.amount - self.max_stack
             self.amount = self.max_stack
             return remainder
-        elif self.amount <= 0:
-            self.amount = 0
         return 0
+    
+    def setAmount(self,_amount):
+        self.amount = _amount
 
     # ---------- Getters ----------
     def getId(self):
