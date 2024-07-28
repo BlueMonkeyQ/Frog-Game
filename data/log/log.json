@@ -1,0 +1,31 @@
+{
+    "gold": {
+        "earned": 0,
+        "spent": 0
+    },
+    "skills":{
+        "fishing": {
+            "Minnow": {
+                "caught": 0,
+                "attempt": 0
+            },
+            "Salmon": {
+                "caught": 0,
+                "attempt": 0
+            },
+            "Sardine": {
+                "caught": 0,
+                "attempt": 0
+            },
+            "Herring": {
+                "caught": 0,
+                "attempt": 0
+            }
+        }
+    },
+    "items": {
+        "1": {
+            "amount": 0
+        }
+    }
+}

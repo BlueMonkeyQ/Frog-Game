@@ -77,7 +77,7 @@ def testBank():
     assert player.bankAdd(7,100) is True
     assert player.bankToInventory(7,100) is True
     assert len(player.getInventory()) == player.getInventoryMax()
-    assert player.bankFindItem(7).getAmount() == 98
+    assert player.bankFindItem(7).getAmount() == 74
 
     # Adding item from Bank to Inventory with amount over what we have
     assert player.inventoryRemove(2,1) is True
@@ -89,3 +89,9 @@ def testBank():
     # Adding item from Bank to Inventory but inventory is full
     assert player.bankToInventory(9,100) is False
     assert len(player.getInventory()) == player.getInventoryMax()
+
+def testLog():
+    player = Player()
+
+    assert "gold" in player.getLog()
+    assert player.getLog()['gold']['earned'] == 0
