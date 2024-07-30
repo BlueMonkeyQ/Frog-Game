@@ -22,6 +22,10 @@ class Player:
         self.backpack: Item = None
         self.tool: Item = None
 
+        # Location
+        self.world = 'earth'
+        self.location = 1
+
     def displayStats(self):
         print(f"---------- General ----------")
         print(f":: {self.name}")
@@ -195,94 +199,94 @@ class Player:
             print(e)
             return False
 
-    # ---------- Bank ----------
+    # # ---------- Bank ----------
 
-    def bankFindItem(self, id):
-        """Returns index given id"""
-        for i in self.bank:
-            if i.getId() == id:
-                return i
-        return None
+    # def bankFindItem(self, id):
+    #     """Returns index given id"""
+    #     for i in self.bank:
+    #         if i.getId() == id:
+    #             return i
+    #     return None
 
-    def bankAdd(self, id, amount):
-        """
-        Adds item into players bank
-        If item exist in bank, just add to the amount count
-        Else, create new item entry
-        """
-        try:
-            item_object = self.bankFindItem(id)
+    # def bankAdd(self, id, amount):
+    #     """
+    #     Adds item into players bank
+    #     If item exist in bank, just add to the amount count
+    #     Else, create new item entry
+    #     """
+    #     try:
+    #         item_object = self.bankFindItem(id)
 
-            if item_object is None:
-                item = itemFromJson(item_dict[f"{id}"], id)
-                item.calculateAmount(amount, True)
-                self.bank.append(item)
+    #         if item_object is None:
+    #             item = itemFromJson(item_dict[f"{id}"], id)
+    #             item.calculateAmount(amount, True)
+    #             self.bank.append(item)
 
-            else:
-                item_object.calculateAmount(amount, True)
+    #         else:
+    #             item_object.calculateAmount(amount, True)
 
-            return True
+    #         return True
 
-        except Exception as e:
-            print(e)
-            return False
+    #     except Exception as e:
+    #         print(e)
+    #         return False
 
-    def bankRemove(self, id, amount=1):
-        """
-        Removes item from bank
-        If item.amount > 0 Keep item in banbk
-        Else remove it
-        """
-        try:
-            item_object = self.bankFindItem(id)
+    # def bankRemove(self, id, amount=1):
+    #     """
+    #     Removes item from bank
+    #     If item.amount > 0 Keep item in banbk
+    #     Else remove it
+    #     """
+    #     try:
+    #         item_object = self.bankFindItem(id)
 
-            if item_object is None:
-                return False
+    #         if item_object is None:
+    #             return False
 
-            else:
-                item_object.calculateAmount(-amount, True)
-                if item_object.getAmount() <= 0:
-                    self.bank.remove(item_object)
+    #         else:
+    #             item_object.calculateAmount(-amount, True)
+    #             if item_object.getAmount() <= 0:
+    #                 self.bank.remove(item_object)
 
-            return True
+    #         return True
 
-        except Exception as e:
-            print(e)
-            return False
+    #     except Exception as e:
+    #         print(e)
+    #         return False
 
-    def bankToInventory(self, id, amount):
-        """
-        Removes item and amount from bank to inventory
-        If len(inventory) == inventory_max return False
-        elif amount > item.max_stack return max_stack
-        elif return amount
-        if item.amount == 0 remove item from bank
-        else keep
-        """
-        try:
-            if len(self.inventory) == self.inventory_max:
-                print("Inventory is at max capacity")
-                return False
+    # def bankToInventory(self, id, amount):
+    #     """
+    #     Removes item and amount from bank to inventory
+    #     If len(inventory) == inventory_max return False
+    #     elif amount > item.max_stack return max_stack
+    #     elif return amount
+    #     if item.amount == 0 remove item from bank
+    #     else keep
+    #     """
+    #     try:
+    #         if len(self.inventory) == self.inventory_max:
+    #             print("Inventory is at max capacity")
+    #             return False
 
-            item_object = self.bankFindItem(id)
-            if amount > item_object.getAmount():
-                amount = item_object.getAmount()
+    #         item_object = self.bankFindItem(id)
+    #         if amount > item_object.getAmount():
+    #             amount = item_object.getAmount()
 
-            new_amount = self.inventoryAdd(id, amount)
+    #         new_amount = self.inventoryAdd(id, amount)
 
-            if new_amount != 0:
-                amount -= new_amount
+    #         if new_amount != 0:
+    #             amount -= new_amount
 
-            item_object.calculateAmount(-amount, True)
+    #         item_object.calculateAmount(-amount, True)
 
-            if item_object.getAmount() == 0:
-                self.bankRemove(id)
+    #         if item_object.getAmount() == 0:
+    #             self.bankRemove(id)
 
-            return True
+    #         return True
 
-        except Exception as e:
-            print(e)
-            return False
+    #     except Exception as e:
+    #         print(e)
+    #         return False
 
     # ---------- Setters ----------
     def setFishingXp(self, xp):
@@ -320,3 +324,8 @@ class Player:
 
     def getLog(self):
         return self.log
+    
+    def getWorld(self):
+        return self.world
+    def getLocation(self):
+        return self.location

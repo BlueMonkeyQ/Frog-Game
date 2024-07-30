@@ -1,25 +1,26 @@
 import functions
 import item
+import maps
+from lilypad import Lilypad, Crew
 from player import Player
 
 fishing_dict = functions.getJSONSkills("fishing")
 
 
-def getDrops(player: Player, drop_table):
+def getDrops(lilypad: Lilypad, drop_table):
     drops = functions.getDrops(drop_table)
     for id, amount in drops:
-        print(f"+{amount} {item.getItemName(id)}")
-        player.inventoryAdd(id, amount)
+        lilypad.storageAdd(id, amount)
 
 
-def checkForSupplies(player: Player, supplies_id):
+def checkForSupplies(lilypad: Lilypad, supplies_id):
     """Checks if the respective supplies for the tool exist in players inventory"""
-    if (supplies_id is None) or (player.inventoryFindItem(supplies_id) is not None):
+    if (supplies_id is None) or (lilypad.storageFindId(supplies_id) is not None):
         return True
     return False
 
 
-def getFish(player: Player, tool_type, fishes):
+def getFish(lvl, tool, fishes):
     """
     Given:
     Fishes available
@@ -32,7 +33,7 @@ def getFish(player: Player, tool_type, fishes):
     available_fish = [
         i
         for i in fishes
-        if i["type"] == tool_type and i["lvl"] <= player.getLevel(player.getFishingXp())
+        if i["type"] == tool and i["lvl"] <= lvl
     ]
     if len(available_fish) == 0:
         return None
@@ -41,42 +42,24 @@ def getFish(player: Player, tool_type, fishes):
     return available_fish[index]
 
 
-def fishingMenu(player: Player, location_dict):
-    """Menu for interacting with a fishing skill"""
+def fishing(player: Player, crew: Crew, lilypad: Lilypad):
+    """"""
 
-    # Check if player has fishing tool equipped
-    if player.getTool() and player.getTool().getToolType() in [
-        "net",
-        "fly",
-        "spear",
-        "fishing",
-    ]:
-        # Check if player has supplies
-        tool = player.getTool()
-        tool_type = tool.getToolType()
-        supplies_id = tool.getToolSupplies()
-        if checkForSupplies(player, supplies_id) is True:
-            fish = getFish(player, tool_type, location_dict["fishing"])
-            if fish is None:
-                return 0
-            else:
-                player.inventoryRemove(supplies_id, 1)
-                fishing(player, fish)
-                return True
-        else:
-            print(f"Missing Supply: {item.getItemName(supplies_id)}")
-    else:
-        return None
+    tool = crew.getTool()
+    if tool is None:
+        return False
+    
+    player_lvl = player.getLevel(player.getFishingXp())
+    location = maps.getLocation(player.getLocation())
 
-
-def fishing(player: Player, fish: dict):
-    """Handles catching a fish"""
+    fish = getFish(player_lvl,tool.getTool(),location['fishing'])
+    if fish is None:
+        return False
 
     object_lvl = fish["lvl"]
     drop_table = fish["drops"]
     xp = fish["xp"]
 
-    player_lvl = player.getLevel(player.getFishingXp())
     chance = player_lvl - object_lvl
     if chance <= 0:
         chance = 10
@@ -85,22 +68,14 @@ def fishing(player: Player, fish: dict):
     else:
         chance = chance * 10
 
-    print("---------- Fishing ----------")
+    while True:
+        if functions.rollChance(1, 100) <= chance:
+            player.setLogSkill('fishing',fish['name'],'caught',1)
+            player.setFishingXp(functions.getXP(xp, 1.0))
+            getDrops(lilypad, drop_table)
+            break
+        else:
+            player.setLogSkill('fishing',fish['name'],'attempt',1)
+            player.setFishingXp(functions.getXP(xp, 0.2))
 
-    if functions.skillCheck(player_lvl, object_lvl):
-        while True:
-            print("Fishing...")
-            if functions.rollChance(1, 100) <= chance:
-                print("Caught!")
-                player.setLogSkill('fishing',fish['name'],'caught',1)
-                player.setFishingXp(functions.getXP(xp, 1.0))
-                getDrops(player, drop_table)
-                break
-            else:
-                player.setLogSkill('fishing',fish['name'],'attempt',1)
-                player.setFishingXp(functions.getXP(xp, 0.2))
-
-    else:
-        print(f"Lvl Requirement: {object_lvl}")
-
-    print("----------  ----------")
+    return True

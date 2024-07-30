@@ -10,29 +10,29 @@ def getJson():
 
 def getItem(id) -> dict:
     """Returns item object given id"""
-    return item_dict[f"{id}"]
+    return item_dict[str(id)]
 
 
 def getItemName(id):
     """Returns the name of the item given the ID"""
-    return item_dict[f"{id}"]["name"]
+    return item_dict[str(id)]["name"]
 
 
 def getItemValue(id):
     "Returns the value of the item given the ID"
-    return item_dict[f"{id}"]["value"]
+    return item_dict[str(id)]["value"]
 
 
-def itemFromJson(json_data, id):
+def createItem(id):
     default_values = {
-        "amount": 0,
-        "max_stack": 1,
-        "eat": False,
-        "backpack": None,
-        "tool": None,
         "type": None,
-        "supplies": None,
+        "skills": {},
+        "tool": None,
+        "value": None,
+        "amount": 0
     }
+
+    json_data = getItem(id)
 
     for key, value in default_values.items():
         if key not in json_data:
@@ -41,42 +41,34 @@ def itemFromJson(json_data, id):
     return Item(
         id=id,
         name=json_data["name"],
-        max_stack=json_data["max_stack"],
-        amount=json_data["amount"],
-        eat=json_data["eat"],
+        _type=json_data["type"],
+        skills=json_data["skills"],
         tool=json_data["tool"],
-        backpack=json_data["backpack"],
+        value=json_data["value"],
+        amount=json_data["amount"],
     )
-
 
 item_dict = getJson()
 
 
 class Item:
-    def __init__(self, id, name, max_stack, amount, eat, tool, backpack):
+    def __init__(self, id, name, _type, skills, tool, value, amount):
         self.id = id
         self.name = name
-        self.max_stack = max_stack
-        self.amount = amount
-        self.eat = eat
+        self.type = _type
+        self.skills = skills
         self.tool = tool
-        self.backpack = backpack
+        self.value = value
+        self.amount = amount
 
     # ---------- Setters ----------
-    def calculateAmount(self, amount, in_bank=False):
+    def setAmount(self, amount, max):
         self.amount += amount
-        if self.amount <= 0:
+        if self.amount >= max:
+            self.amount = max
+        elif self.amount <= 0:
             self.amount = 0
-        if in_bank is True:
-            return 0
-        if self.amount > self.max_stack:
-            remainder = self.amount - self.max_stack
-            self.amount = self.max_stack
-            return remainder
-        return 0
-
-    def setAmount(self, _amount):
-        self.amount = _amount
+        return True
 
     # ---------- Getters ----------
     def getId(self):
@@ -85,26 +77,17 @@ class Item:
     def getName(self):
         return self.name
 
-    def getMaxStack(self):
-        return self.max_stack
+    def getType(self):
+        return self.type
 
-    def getAmount(self):
-        return self.amount
-
-    def getEat(self):
-        return self.eat
+    def getSkills(self):
+        return self.skills
 
     def getTool(self):
         return self.tool
 
-    def getToolType(self):
-        return self.tool["type"]
+    def getValue(self):
+        return self.value
 
-    def getToolSupplies(self):
-        return self.tool["supplies"]
-
-    def getBackpack(self):
-        return self.backpack
-
-    def getBackpackCapacity(self):
-        return self.backpack["capacity"]
+    def getAmount(self):
+        return self.amount

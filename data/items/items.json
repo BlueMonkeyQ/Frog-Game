@@ -1,97 +1,24 @@
 {
-    "1": {
-        "name": "Raw Minnow",
-        "max_stack": 1,
+    "1":{
+        "name": "Raw Shrimp",
+        "type": "fish",
+        "skills":{
+            "fishing": 1,
+            "cooking": 1
+        },
+        "tool": "net",
         "value": 1
     },
-    "2": {
-        "name": "Fishing Pole",
-        "max_stack": 1,
-        "tool": {
-            "type": "fishing",
-            "supplies": 8
-        },
-        "value": 100
-    },
-    "3": {
-        "name": "Fly Fishing Pole",
-        "max_stack": 1,
-        "tool": {
-            "type": "fly",
-            "supplies": 9
-        },
-        "value": 100
-    },
-    "4": {
-        "name": "Spear",
-        "max_stack": 1,
-        "tool": {
-            "type": "spear"
-        },
-        "value": 1000
-    },
-    "5": {
+    "2":{
         "name": "Net",
-        "max_stack": 1,
-        "tool": {
-            "type": "net"
-        },
-        "value": 10000
-    },
-    "6": {
-        "name": "Bag on a stick",
-        "max_stack": 1,
-        "backpack": {
-            "capacity": 20
-        },
-        "value": 10000
-    },
-    "7": {
-        "name": "Raw Salmon",
-        "max_stack": 1,
+        "type": "tool",
+        "tool": "net",
         "value": 1
     },
-    "8": {
-        "name": "Bait",
-        "max_stack": 500,
+    "3":{
+        "name": "Fishing Pole",
+        "type": "tool",
+        "tool": "pole",
         "value": 1
-    },
-    "9": {
-        "name": "Feather",
-        "max_stack": 500,
-        "value": 1
-    },
-    "10": {
-        "name": "Raw Sardine",
-        "max_stack": 1,
-        "value": 1
-    },
-    "11": {
-        "name": "Raw Herring",
-        "max_stack": 1,
-        "value": 1
-    },
-    "12": {
-        "name": "Raw Pike",
-        "max_stack": 1,
-        "value": 1
-    },
-    "13": {
-        "name": "Raw Anglerfish",
-        "max_stack": 1,
-        "value": 1
-    },
-    "14": {
-        "name": "Raw Trout",
-        "max_stack": 1,
-        "value": 1
-    },
-    "15": {
-        "name": "Fish Barrel",
-        "max_stack": 1,
-        "backpack": {
-            "capacity": 50
-        },
-        "value": 100
     }
 }
