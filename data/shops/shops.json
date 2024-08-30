@@ -1,9 +1,7 @@
 {
     "1": {
         "name": "Fishing Shop",
-        "inventory":[
-            2,3,4,5,8,9,15
-        ],
+        "inventory":[3],
         "rate":{
             "1": 2.0
         }

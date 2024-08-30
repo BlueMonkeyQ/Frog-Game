@@ -28,8 +28,10 @@ def createItem(id):
         "type": None,
         "skills": {},
         "tool": None,
+        "supply": None,
         "value": None,
-        "amount": 0
+        "amount": 0,
+        "max": 1
     }
 
     json_data = getItem(id)
@@ -44,31 +46,56 @@ def createItem(id):
         _type=json_data["type"],
         skills=json_data["skills"],
         tool=json_data["tool"],
+        supply=json_data["supply"],
         value=json_data["value"],
         amount=json_data["amount"],
+        max=json_data["max"]
     )
 
 item_dict = getJson()
 
-
 class Item:
-    def __init__(self, id, name, _type, skills, tool, value, amount):
+    def __init__(self, id, name, _type, skills, tool, supply, value, amount, max):
         self.id = id
         self.name = name
         self.type = _type
         self.skills = skills
         self.tool = tool
+        self.supply = supply
         self.value = value
         self.amount = amount
+        self.max = max
 
     # ---------- Setters ----------
-    def setAmount(self, amount, max):
+    def addAmount(self,amount):
         self.amount += amount
-        if self.amount >= max:
-            self.amount = max
+
+        if self.amount >= self.max:
+            remainder = self.amount - self.max
+            self.amount = self.max
+            return remainder
+
+        return 0
+    
+    def removeAmount(self,amount):
+        self.amount -= amount
+        if self.amount <= 0:
+            self.amount = 0    
+        return True
+
+
+    def setAmount(self, amount):
+        self.amount += amount
+
+        if self.amount >= self.max:
+            remainder = self.amount - self.max
+            self.amount = self.max
+            return remainder
+        
         elif self.amount <= 0:
             self.amount = 0
-        return True
+        
+        return self.amount
 
     # ---------- Getters ----------
     def getId(self):
@@ -85,9 +112,15 @@ class Item:
 
     def getTool(self):
         return self.tool
+    
+    def getSupply(self):
+        return self.supply
 
     def getValue(self):
         return self.value
 
     def getAmount(self):
         return self.amount
+    
+    def getMax(self):
+        return self.max

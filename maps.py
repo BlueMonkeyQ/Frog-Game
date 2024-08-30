@@ -1,5 +1,3 @@
-import shops
-import skills
 import json
 from pathlib import Path
 

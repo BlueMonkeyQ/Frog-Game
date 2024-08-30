@@ -1,21 +1,32 @@
 {
     "1":{
         "name": "Raw Shrimp",
-        "type": "fish",
+        "max": 10,
+        "type": "rawfish",
         "skills":{
             "fishing": 1,
-            "cooking": 1
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 2,
+                "burntID": 0
+            }
         },
-        "tool": "net",
         "value": 1
     },
     "2":{
+        "name": "Shrimp",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "3":{
         "name": "Net",
         "type": "tool",
         "tool": "net",
-        "value": 1
+        "value": 2
     },
-    "3":{
+    "4":{
         "name": "Fishing Pole",
         "type": "tool",
         "tool": "pole",
