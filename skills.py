@@ -68,13 +68,21 @@ def getFish(lvl:int, tool:item.Item, available_fish:list):
 
     return available_fish[index]
 
-def fishing(player: Player, lilypad: Lilypad, times:int=1):
+def getTree(lvl:int, tool:item.Item, available_trees:list):
+    trees = [
+        i
+        for i in available_trees
+        if i["type"] == tool and i["lvl"] <= lvl
+    ]
+    if len(trees) == 0:
+        return None
+    index = rollChance(0, len(available_trees) - 1)
+
+    return available_trees[index]
+
+def fishing(player: Player, lilypad: Lilypad, tool:item.Item):
     """"""
     fishing_dict = getJson("fishing")
-    tool = player.getTool()
-    if tool is None:
-        return False
-    
 
     while True:
 
@@ -112,6 +120,48 @@ def fishing(player: Player, lilypad: Lilypad, times:int=1):
                 break
             else:
                 player.setLogSkill('fishing',fish['name'],'attempt',1)
+
+    return True
+
+def woodcutting(player: Player, lilypad: Lilypad, tool:item.Item):
+    """"""
+    tree_dict = getJson("woodcutting")
+    while True:
+
+        if len(lilypad.getStorage()) >= lilypad.getStorageMax():
+            lilypad.storageRemove(-1,10000)
+            break
+
+        if checkForSupplies(lilypad=lilypad,supplies_id=tool.getSupply()) is False:
+            break
+
+        lvl = player.getLevel(player.getWoodcuttingXp())
+        available_trees = [tree_dict[str(i)] for i in player.getLocation()['woodcutting']]
+
+        tree = getTree(lvl=lvl,tool=tool.getTool(),available_trees=available_trees)
+        if tree is None:
+            return False
+
+        object_lvl = tree["lvl"]
+        drop_table = tree["drops"]
+        xp = tree["xp"]
+
+        chance = lvl - object_lvl
+        if chance <= 0:
+            chance = 10
+        elif chance > 10:
+            chance = 100
+        else:
+            chance = chance * 10
+
+        while True:
+            if rollChance(1, 100) <= chance:
+                player.setLogSkill('woodcutting',tree['name'],'cut',1)
+                player.setWoodcuttingXp(getXP(xp, 1.0))
+                getDrops(lilypad, drop_table)
+                break
+            else:
+                pass
 
     return True
 

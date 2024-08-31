@@ -21,6 +21,11 @@
                 "caught": 0,
                 "attempt": 0
             }
+        },
+        "woodcutting": {
+            "Tree": {
+                "cut": 0
+            }
         }
     },
     "items": {

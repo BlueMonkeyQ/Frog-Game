@@ -23,13 +23,288 @@
     "3":{
         "name": "Net",
         "type": "tool",
+        "skill": "fishing",
         "tool": "net",
-        "value": 2
+        "value": 100
     },
     "4":{
         "name": "Fishing Pole",
         "type": "tool",
+        "skill": "fishing",
         "tool": "pole",
+        "value": 100
+    },
+    "5":{
+        "name": "Log",
+        "value": 1,
+        "skills":{
+            "firemaking": {
+                "xp": 10,
+                "lvl": 5
+            }
+        }
+    },
+    "6":{
+        "name": "Oak Log",
+        "value": 2,
+        "skills":{
+            "firemaking": {
+                "xp": 20,
+                "lvl": 15
+            }
+        }
+    },
+    "7":{
+        "name": "Willow Log",
+        "value": 3,
+        "skills":{
+            "firemaking": {
+                "xp": 30,
+                "lvl": 30
+            }
+        }
+    },
+    "8":{
+        "name": "Maple Log",
+        "value": 4,
+        "skills":{
+            "firemaking": {
+                "xp": 40,
+                "lvl": 45
+            }
+        }
+    },
+    "9":{
+        "name": "Yew Log",
+        "value": 5,
+        "skills":{
+            "firemaking": {
+                "xp": 50,
+                "lvl": 60
+            }
+        }
+    },
+    "10":{
+        "name": "Magic Log",
+        "value": 6,
+        "skills":{
+            "firemaking": {
+                "xp": 60,
+                "lvl": 75
+            }
+        }
+    },
+    "11":{
+        "name": "Redwood Log",
+        "value": 7,
+        "skills":{
+            "firemaking": {
+                "xp": 70,
+                "lvl": 90
+            }
+        }
+    },
+    "12":{
+        "name": "Raw Sardine",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 13,
+                "burntID": 0
+            }
+        },
         "value": 1
+    },
+    "13":{
+        "name": "Sardine",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "14":{
+        "name": "Raw Anchovy",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 15,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "15":{
+        "name": "Anchovy",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "16":{
+        "name": "Raw Trout",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 17,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "17":{
+        "name": "Trout",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "18":{
+        "name": "Raw Salmon",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 19,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "19":{
+        "name": "Salmon",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "20":{
+        "name": "Raw Lobster",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 21,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "21":{
+        "name": "Lobster",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "22":{
+        "name": "Raw Swordfish",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 23,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "23":{
+        "name": "Swordfish",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "24":{
+        "name": "Raw Shark",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 25,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "25":{
+        "name": "Shark",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "26":{
+        "name": "Raw Manta Ray",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 27,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "27":{
+        "name": "Manta Ray",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "28":{
+        "name": "Raw Anglerfish",
+        "max": 10,
+        "type": "rawfish",
+        "skills":{
+            "fishing": 1,
+            "cooking": {
+                "xp": 30,
+                "lvl": 1,
+                "cookID": 29,
+                "burntID": 0
+            }
+        },
+        "value": 1
+    },
+    "29":{
+        "name": "Anglerfish",
+        "max": 10,
+        "type": "fish",
+        "value": 5
+    },
+    "30":{
+        "name": "Spear",
+        "type": "tool",
+        "skill": "fishing",
+        "tool": "spear",
+        "value": 100
+    },
+    "31":{
+        "name": "Cage",
+        "type": "tool",
+        "skill": "fishing",
+        "tool": "cage",
+        "value": 100
     }
 }

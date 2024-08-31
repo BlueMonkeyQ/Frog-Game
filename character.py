@@ -1,4 +1,5 @@
 import item
+from rich import print
 from typing import List
 
 class Character():
@@ -25,8 +26,9 @@ class Player(Character):
         super().__init__(name)
         self.gold = 0
         self.fishing_xp = 0
+        self.woodcutting_xp = 0
         self.cooking_xp = 0
-        self.tool: item.Item = None
+        self.tool_belt: List[item.Item] = []
         self.location: dict = location
         self.log: dict = log
 
@@ -35,12 +37,25 @@ class Player(Character):
 
     def getFishingXp(self):
         return self.fishing_xp
+    
+    def getWoodcuttingXp(self):
+        return self.woodcutting_xp
 
     def getCookingXp(self):
         return self.cooking_xp
     
-    def getTool(self):
-        return self.tool
+    def getToolBelt(self):
+        return self.tool_belt
+
+    def getToolBeltType(self,_type):
+        for tool in self.tool_belt:
+            if tool.type == _type:
+                return tool
+        return None
+    
+    def getToolBeltSkill(self,skill):
+        tools = [tool.getName() for tool in self.tool_belt if skill in tool.getSkill()]
+        return tools
     
     def getLocation(self):
         return self.location
@@ -53,19 +68,40 @@ class Player(Character):
     def setFishingXp(self,xp):
         self.fishing_xp += xp
 
+    def setWoodcuttingXp(self,xp):
+        self.woodcutting_xp += xp
+
     def setCookingXp(self,xp):
         self.cooking_xp += xp
-
-    def setTool(self,tool:item.Item):
-        if self.tool is None:
-            self.tool = tool
-        else:
-            old_tool = self.tool
-            self.tool = tool
-            return old_tool
 
     def setLocation(self,location):
         self.location = location
 
     def setLogSkill(self,skill,thing,key,value):
         self.log['skills'][skill][thing][key] += value
+
+    def setToolBelt(self,tool:item.Item):
+        """
+        If Tool type exist in belt, return old tool to inventory, then replace.
+        Else, append tool to belt.
+        """
+
+        if tool.getType() != "tool":
+            print.warning("Item is not a tool.")
+            return False
+        
+        tool_type = tool.getTool()
+
+        index = None
+        for i in range(len(self.tool_belt)):
+            if self.tool_belt[i].getTool() == tool_type:
+                index = i
+                break
+        
+        if index is not None:
+            old_tool = self.tool_belt[index]
+            self.tool_belt[index] = tool
+            return old_tool
+        else:
+            self.tool_belt.append(tool)
+            return None

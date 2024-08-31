@@ -31,10 +31,10 @@ def buildLocation(player: Player):
 
 def buildCharacter(player: Player):
     table = Table.grid()
-    table.add_row(f"Gold        {player.getGold()}")
-    table.add_row(f"Fishing Lvl {player.getLevel(player.getFishingXp()):<2} {player.getFishingXp():>7}xp")
-    table.add_row(f"Cooking Lvl {player.getLevel(player.getCookingXp()):<2} {player.getCookingXp():>7}xp")
-    table.add_row(f"Tool        {player.getTool().getName() if player.getTool() is not None else 'None'}")
+    table.add_row(f"Gold        {player.getGold()}c")
+    table.add_row(f"Fishing     Lvl {player.getLevel(player.getFishingXp()):<2} {player.getFishingXp():>7}xp")
+    table.add_row(f"Cooking     Lvl {player.getLevel(player.getCookingXp()):<2} {player.getCookingXp():>7}xp")
+    table.add_row(f"Woodcutting Lvl {player.getLevel(player.getWoodcuttingXp()):<2} {player.getWoodcuttingXp():>7}xp")
     return table
 
 def buildLilypad(lilypad: Lilypad):
@@ -65,7 +65,7 @@ def buildShop(shop_dict):
     
     table = Table.grid()
     for indx, i in enumerate(items):
-        table.add_row(f"{indx+1}| {i['name']} Gold: {i['value']}")
+        table.add_row(f"{indx+1}| {i['name']:<15} {i['value']}c")
     return table
     
 def getInput(options):
@@ -92,7 +92,7 @@ def getMultiInput(options):
     if action == "Back":
         return ["Back"]
     
-    elif action == "Buy" or action == "Sell":
+    elif action == "Buy" or action == "Sell" or action == "Drop":
 
         if len(sections) != 3:
             console.print("[red]Buy/Sell Item Position Amount[/red]")
@@ -110,6 +110,16 @@ def getMultiInput(options):
         if not sections[2].isdigit():
             console.print("[red]Invalid Amount[/red]")
             return False
+        
+    elif action == "Equip":
+        if len(sections) != 2:
+            console.print("[red]Equip Item Position[/red]")
+            return False
+
+        if not (sections[0].isdigit() and 1 <= int(sections[0]) <= len(options)):
+            console.print("[red]Invalid Equip Option[/red]")
+            return False
+        sections[0] = action
         
     elif action == "Cook":
         if len(sections) != 2:
@@ -130,6 +140,7 @@ def getMultiInput(options):
 def buildScreen(player: Player,lilypad: Lilypad, options: list,
                 show_character=False,show_inv=False,show_shop=False,
                 shop_dict=None):
+    console = Console()
     layout = Layout()
 
     layout.split_column(
@@ -171,16 +182,21 @@ def buildScreen(player: Player,lilypad: Lilypad, options: list,
         Layout(Panel(buildMenu(options=options),title="Options"))
     )
     layout['input'].size = 3
-    print(layout)
+    console.print(layout)
 
 def lilypadHomeScreen(player:Player, lilypad:Lilypad):
     options = []
 
     if len(player.getLocation()['fishing']) >= 1:
         options.append("Fishing")
+
+    if len(player.getLocation()['woodcutting']) >= 1:
+        options.append("Woodcutting")
+
     if lilypad.getStove() is True:
         options.append("Cook")
-    options.extend(["Inventory","Fishing Shop","Quit"])
+
+    options.extend(["Inventory","Shops","Quit"])
     while True:
 
         buildScreen(player=player,lilypad=lilypad,options=options,
@@ -190,20 +206,25 @@ def lilypadHomeScreen(player:Player, lilypad:Lilypad):
         if choice == "Fishing":
             lilypadFishScreen(player=player,lilypad=lilypad)
 
+        elif choice == "Woodcutting":
+            lilypadWoodcutScreen(player=player,lilypad=lilypad)
+
         elif choice == "Cook":
             lilypadCookScreen(player=player,lilypad=lilypad)
 
         elif choice == 'Inventory':
             lilypadInventoryScreen(player=player,lilypad=lilypad)
 
-        elif choice == "Fishing Shop":
-            shopScreen(player=player,lilypad=lilypad,shop_id=1)
+        elif choice == "Shops":
+            shopsScreen(player=player,lilypad=lilypad)
 
         elif choice == 'Quit':
             return 0
 
 def lilypadInventoryScreen(player:Player, lilypad:Lilypad):
     options = [
+        "Equip",
+        "Drop",
         "Back"
     ]
 
@@ -211,13 +232,56 @@ def lilypadInventoryScreen(player:Player, lilypad:Lilypad):
 
         buildScreen(player=player,lilypad=lilypad,options=options,
                     show_character=True,show_inv=True)
-        choice = getInput(options)
+        choices = getMultiInput(options)
+        
+        if choices is False:
+            continue
+        
+        if choices[0] == "Back":
+            break
+        
+        action = choices[0]
+        index = int(choices[1])
 
-        if choice == 'Back':
-            return 0
+        if len(choices) == 3:
+            quantity = int(choices[2])
+        else:
+            quantity = 1
+
+        if (action == "Equip") and (1 <= int(index) <= len(lilypad.getStorage())):
+            _item = lilypad.storageGetIndex(index-1)
+            tool = player.setToolBelt(_item)
+            if tool is False:
+                continue
+            
+            lilypad.storageRemove(index-1,quantity)
+
+            if tool != None:
+                lilypad.storageAdd(_item.getId(),quantity)
+
+        elif (action == "Drop") and (1 <= int(index) <= len(lilypad.getStorage())):
+            lilypad.storageRemove(index-1,quantity)
 
 def lilypadFishScreen(player:Player, lilypad:Lilypad):
-    skills.fishing(player=player, lilypad=lilypad, times=1)
+    while True:
+        options = player.getToolBeltSkill("fishing")
+        options.append("Back")
+        buildScreen(player=player,lilypad=lilypad,options=options,
+                    show_character=True)
+        choice = getInput(options)
+
+        if choice is False:
+            continue
+        if choice == "Back":
+            break
+        
+        index = options.index(choice)
+        tool = player.getToolBelt()[index]
+
+        skills.fishing(player=player, lilypad=lilypad, tool=tool)
+
+def lilypadWoodcutScreen(player:Player, lilypad:Lilypad):
+    skills.woodcutting(player=player, lilypad=lilypad, times=1)
 
 def lilypadCookScreen(player:Player, lilypad:Lilypad):
 
@@ -241,6 +305,28 @@ def lilypadCookScreen(player:Player, lilypad:Lilypad):
 
 def lilypadTravelScreen(player:Player, lilypad:Lilypad):
     pass
+
+def shopsScreen(player:Player, lilypad:Lilypad):
+
+    while True:
+        options = []
+        for i in player.getLocation()['shops']:
+            options.append(shops.getShop(i)['name'])
+        options.append("Back")
+        
+        buildScreen(player=player,lilypad=lilypad,options=options,
+                    show_character=True,
+                    )
+
+        choices = getMultiInput(options)
+        if choices is False:
+            continue
+        if choices[0] == "Back":
+            break
+        else:
+            index = int(choices[0]) - 1
+            shop_id = player.getLocation()['shops'][index]
+            shopScreen(player=player,lilypad=lilypad,shop_id=shop_id)
 
 def shopScreen(player:Player, lilypad:Lilypad, shop_id:int):
     shop_dict = shops.getShop(shop_id)

@@ -26,6 +26,7 @@ def getItemValue(id):
 def createItem(id):
     default_values = {
         "type": None,
+        "skill": None,
         "skills": {},
         "tool": None,
         "supply": None,
@@ -44,6 +45,7 @@ def createItem(id):
         id=id,
         name=json_data["name"],
         _type=json_data["type"],
+        skill=json_data["skill"],
         skills=json_data["skills"],
         tool=json_data["tool"],
         supply=json_data["supply"],
@@ -55,10 +57,11 @@ def createItem(id):
 item_dict = getJson()
 
 class Item:
-    def __init__(self, id, name, _type, skills, tool, supply, value, amount, max):
+    def __init__(self, id, name, _type, skill, skills, tool, supply, value, amount, max):
         self.id = id
         self.name = name
         self.type = _type
+        self.skill = skill
         self.skills = skills
         self.tool = tool
         self.supply = supply
@@ -106,6 +109,9 @@ class Item:
 
     def getType(self):
         return self.type
+
+    def getSkill(self):
+        return self.skill
 
     def getSkills(self):
         return self.skills

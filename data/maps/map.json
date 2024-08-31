@@ -1,8 +1,9 @@
 {
     "1":{
         "name": "Pond",
-        "shops":[1],
+        "shops":[1,2],
         "areas":[],
-        "fishing":[1]
+        "fishing":[1],
+        "woodcutting":[1]
     }
 }

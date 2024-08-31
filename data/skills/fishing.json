@@ -9,57 +9,84 @@
         ]
     },
     "2":{
-        "name": "Salmon",
-        "lvl": 25,
-        "xp": 5,
-        "type": "fly",
-        "drops":[
-            [7,100,1,1]
-        ]
-    },
-    "3":{
         "name": "Sardine",
         "lvl": 1,
         "xp": 5,
-        "type": "fishing",
-        "drops":[
-            [10,100,1,1]
-        ]
-    },
-    "4":{
-        "name": "Herring",
-        "lvl": 5,
-        "xp": 5,
-        "type": "fishing",
-        "drops":[
-            [11,100,1,1]
-        ]
-    },
-    "5":{
-        "name": "Pike",
-        "lvl": 20,
-        "xp": 5,
-        "type": "fishing",
+        "type": "net",
         "drops":[
             [12,100,1,1]
         ]
     },
-    "6":{
-        "name": "Anglerfish",
-        "lvl": 50,
+    "3":{
+        "name": "Anchovy",
+        "lvl": 1,
         "xp": 5,
-        "type": "fishing",
+        "type": "net",
         "drops":[
-            [13,100,1,1]
+            [14,100,1,1]
+        ]
+    },
+    "4":{
+        "name": "Trout",
+        "lvl": 1,
+        "xp": 5,
+        "type": "pole",
+        "drops":[
+            [16,100,1,1]
+        ]
+    },
+    "5":{
+        "name": "Salmon",
+        "lvl": 1,
+        "xp": 5,
+        "type": "pole",
+        "drops":[
+            [18,100,1,1]
+        ]
+    },
+    "6":{
+        "name": "Lobster",
+        "lvl": 1,
+        "xp": 5,
+        "type": "cage",
+        "drops":[
+            [20,100,1,1]
         ]
     },
     "7":{
-        "name": "Trout",
-        "lvl": 20,
+        "name": "Swordfish",
+        "lvl": 1,
         "xp": 5,
-        "type": "fishing",
+        "type": "spear",
         "drops":[
-            [14,100,1,1]
+            [22,100,1,1]
+        ]
+    },
+    "8":{
+        "name": "Shark",
+        "lvl": 1,
+        "xp": 5,
+        "type": "spear",
+        "drops":[
+            [24,100,1,1]
+        ]
+    },
+    "9":{
+        "name": "Manta Ray",
+        "lvl": 1,
+        "xp": 5,
+        "type": "pole",
+        "drops":[
+            [26,100,1,1]
+        ]
+    },
+    "10":{
+        "name": "Anglerfish",
+        "lvl": 1,
+        "xp": 5,
+        "type": "pole",
+        "drops":[
+            [28,100,1,1]
         ]
     }
 }
